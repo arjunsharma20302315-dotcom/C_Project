@@ -1,0 +1,2 @@
+Cafe Management System in C
+A console-based cafe ordering and billing application developed in C using control structures, loops, switch-case logic, and parallel arrays. The program allows users to dynamically select multiple food items, specify quantities, calculate cumulative subtotals, apply standard GST splits (CGST & SGST), and automatically generate a formatted, professional invoice receipt upon checkout.
