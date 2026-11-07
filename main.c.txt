@@ -1,0 +1,94 @@
+#include <stdio.h>
+
+int main() {
+    int choice, quantity;
+    char total_items_ordered[100][30]; // To store item names for final bill
+    int ordered_quantities[100];
+    float item_prices[100];
+    int item_count = 0;
+    
+    float total_amount = 0.0;
+    float cgst, sgst, final_bill;
+    char continue_shopping;
+
+    printf("=== WELCOME TO THE CAFE DIGI ===\n");
+
+    do {
+        // 1. Display Menu
+        printf("\n--- MENU CARD ---\n");
+        printf("1. Burger        - Rs. 90.00\n");
+        printf("2. Pizza         - Rs. 250.00\n");
+        printf("3. French Fries  - Rs. 70.00\n");
+        printf("4. Cold Coffee   - Rs. 60.00\n");
+        printf("=================\n");
+        
+        printf("Enter the item number you want to order: ");
+        scanf("%d", &choice);
+        
+        printf("Enter the quantity: ");
+        scanf("%d", &quantity);
+
+        // 2. Process choice using Switch-Case
+        switch (choice) {
+            case 1:
+                // Copy item name into our tracking array
+                snprintf(total_items_ordered[item_count], 30, "Burger");
+                item_prices[item_count] = 90.00;
+                break;
+            case 2:
+                snprintf(total_items_ordered[item_count], 30, "Pizza");
+                item_prices[item_count] = 250.00;
+                break;
+            case 3:
+                snprintf(total_items_ordered[item_count], 30, "French Fries");
+                item_prices[item_count] = 70.00;
+                break;
+            case 4:
+                snprintf(total_items_ordered[item_count], 30, "Cold Coffee");
+                item_prices[item_count] = 60.00;
+                break;
+            default:
+                printf("Invalid selection! Item not added to bill.\n");
+                continue; // Skip the rest of the loop block
+        }
+
+        ordered_quantities[item_count] = quantity;
+        total_amount += (item_prices[item_count] * quantity);
+        item_count++;
+
+        // 3. Ask to continue
+        printf("Do you want to add more items? (y/n): ");
+        scanf(" %c", &continue_shopping); // Note the space before %c to catch newline characters
+
+    } while (continue_shopping == 'y' || continue_shopping == 'Y');
+
+    // 4. Calculate Taxes (Assuming 2.5% CGST + 2.5% SGST = 5% total tax)
+    cgst = total_amount * 0.025;
+    sgst = total_amount * 0.025;
+    final_bill = total_amount + cgst + sgst;
+
+    // 5. Generate and print the formatted invoice receipt
+    printf("\n===========================================\n");
+    printf("               INVOICE RECEIPT             \n");
+    printf("===========================================\n");
+    printf("%-15s %-10s %-10s %-10s\n", "Item Name", "Price", "Qty", "Total");
+    printf("-------------------------------------------\n");
+
+    for (int i = 0; i < item_count; i++) {
+        float item_total = item_prices[i] * ordered_quantities[i];
+        printf("%-15s Rs. %-7.2f %-10d Rs. %-7.2f\n", 
+               total_items_ordered[i], item_prices[i], ordered_quantities[i], item_total);
+    }
+
+    printf("-------------------------------------------\n");
+    printf("%-34s Rs. %-7.2f\n", "Subtotal:", total_amount);
+    printf("%-34s Rs. %-7.2f\n", "CGST (2.5%):", cgst);
+    printf("%-34s Rs. %-7.2f\n", "SGST (2.5%):", sgst);
+    printf("===========================================\n");
+    printf("%-34s Rs. %-7.2f\n", "GRAND TOTAL:", final_bill);
+    printf("===========================================\n");
+    printf("         Thank you for visiting!           \n");
+    printf("===========================================\n");
+
+    return 0;
+}
